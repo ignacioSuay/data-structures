@@ -1,4 +1,4 @@
-package com.ignaciosuay.datastructure.graph;
+package com.ignaciosuay.datastructure.graph.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
