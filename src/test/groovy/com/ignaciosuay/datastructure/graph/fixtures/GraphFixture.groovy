@@ -7,21 +7,22 @@ import static com.ignaciosuay.datastructure.graph.fixtures.VertexFixtures.aVerte
 class GraphFixture {
 
 //            d
-//          /
+//          /  \
 //    a -> b -> c-> e
 //
-    def static Graph aGraph(){
+    def static Graph aGraph() {
         Graph<String, String> graph = new Graph<>()
         def vertexA = aVertex("a")
         def vertexB = aVertex("b")
         def vertexC = aVertex("c")
         def vertexD = aVertex("d")
         def vertexE = aVertex("e")
-        graph.addListVertex([vertexA, vertexB, vertexC, vertexD,vertexE])
+        graph.addListVertex([vertexA, vertexB, vertexC, vertexD, vertexE])
 
         graph.insertEdge(vertexA, vertexB, "a-b")
         graph.insertEdge(vertexB, vertexC, "b-c")
         graph.insertEdge(vertexB, vertexD, "b-d")
+        graph.insertEdge(vertexD, vertexC, "d-c")
         graph.insertEdge(vertexC, vertexE, "c-e")
 
         graph
