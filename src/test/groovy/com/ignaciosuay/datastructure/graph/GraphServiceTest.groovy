@@ -9,7 +9,7 @@ class GraphServiceTest extends Specification {
 
     GraphService graphService = new GraphService()
 
-    def "Calculate forest graph"(){
+    def "Calculate forest graph using dfs"(){
 
         given:
         def graph = aGraph()
