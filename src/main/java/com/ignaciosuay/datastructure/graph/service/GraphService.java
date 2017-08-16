@@ -4,10 +4,7 @@ import com.ignaciosuay.datastructure.graph.model.Edge;
 import com.ignaciosuay.datastructure.graph.model.Graph;
 import com.ignaciosuay.datastructure.graph.model.Vertex;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GraphService {
 
@@ -20,16 +17,37 @@ public class GraphService {
     }
 
 
-    private void dfs(Graph graph, Vertex u, Set<Vertex> known, Map<Vertex, Edge> forest) {
+    private void dfs(Graph graph, Vertex<String> u, Set<Vertex> known, Map<Vertex, Edge> forest) {
         known.add(u);
-        for (Object v : u.getEndpoint().keySet()){
-            Vertex vVertex = (Vertex) v;
-            if(!known.contains(vVertex)){
-                Edge edge = (Edge) u.getEndpoint().get(vVertex);
-                forest.put(vVertex, edge);
-                dfs(graph, vVertex, known, forest);
+        for (Vertex<String> v : u.getEndpoint().keySet()) {
+            if (!known.contains(v)) {
+                Edge edge = u.getEndpoint().get(v);
+                forest.put(v, edge);
+                dfs(graph, v, known, forest);
             }
         }
+    }
+
+    public void bfs(Graph<String, String> graph, Vertex<String> start){
+        List<Vertex<String>> level = new ArrayList<>();
+        Set<Vertex> known = new HashSet<>();
+        Map<Vertex, Edge> forest = new HashMap<>();
+        level.add(start);
+
+        while(!level.isEmpty()){
+            List<Vertex<String>> newLevel = new ArrayList<>();
+            for (Vertex<String> vertex : level) {
+                for (Vertex<String> outVertex : vertex.getEndpoint().keySet()) {
+                    if(!known.contains(outVertex)){
+                        known.add(outVertex);
+                        newLevel.add(outVertex);
+                        forest.put(vertex, vertex.getEndpoint().get(outVertex));
+                    }
+                }
+                level = newLevel;
+            }
+        }
+
 
 
     }
