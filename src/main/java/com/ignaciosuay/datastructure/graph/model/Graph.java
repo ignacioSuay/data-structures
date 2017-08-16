@@ -41,6 +41,7 @@ public class Graph<V, E> {
 
     public void insertEdge(Vertex u, Vertex v, E element) {
         Edge<E> edge = new Edge<>();
+        edge.setElement(element);
         edge.setStart(u);
         edge.setEnd(v);
         v.getEndpoint().put(u, edge);
