@@ -9,7 +9,7 @@ class GraphServiceTest extends Specification {
 
     GraphService graphService = new GraphService()
 
-    def "Calculate forest graph using dfs"(){
+    def "Calculate forest graph using dfs"() {
 
         given:
         def graph = aGraph()
@@ -19,5 +19,21 @@ class GraphServiceTest extends Specification {
 
         then:
         result
+        result.size() == 4
+        result.keySet().collect { it.getElement() } == ["b", "c", "e", "d"]
+    }
+
+    def "Calculate forest graph using bfs"() {
+
+        given:
+        def graph = aGraph()
+
+        when:
+        def result = graphService.bfs(aGraph(), graph.getVertices()[0])
+
+        then:
+        result
+        result.size() == 4
+        result.keySet().collect { it.getElement() } == ["b", "c", "d", "e"]
     }
 }

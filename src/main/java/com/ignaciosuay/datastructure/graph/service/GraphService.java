@@ -9,8 +9,8 @@ import java.util.*;
 public class GraphService {
 
 
-    public Map calculateForestDfs(Graph graph, Vertex u) {
-        Map<Vertex, Edge> forest = new HashMap<>();
+    public Map<Vertex, Edge> calculateForestDfs(Graph graph, Vertex u) {
+        Map<Vertex, Edge> forest = new LinkedHashMap<>();
         Set<Vertex> known = new HashSet<>();
         dfs(graph, u, known, forest);
         return forest;
@@ -28,28 +28,27 @@ public class GraphService {
         }
     }
 
-    public void bfs(Graph<String, String> graph, Vertex<String> start){
+    public Map<Vertex, Edge> bfs(Graph<String, String> graph, Vertex<String> start) {
         List<Vertex<String>> level = new ArrayList<>();
         Set<Vertex> known = new HashSet<>();
-        Map<Vertex, Edge> forest = new HashMap<>();
+        Map<Vertex, Edge> forest = new LinkedHashMap<>();
         level.add(start);
+        known.add(start);
 
-        while(!level.isEmpty()){
+        while (!level.isEmpty()) {
             List<Vertex<String>> newLevel = new ArrayList<>();
             for (Vertex<String> vertex : level) {
                 for (Vertex<String> outVertex : vertex.getEndpoint().keySet()) {
-                    if(!known.contains(outVertex)){
+                    if (!known.contains(outVertex)) {
                         known.add(outVertex);
                         newLevel.add(outVertex);
-                        forest.put(vertex, vertex.getEndpoint().get(outVertex));
+                        forest.put(outVertex, vertex.getEndpoint().get(outVertex));
                     }
                 }
                 level = newLevel;
             }
         }
-
-
-
+        return forest;
     }
 
 }
