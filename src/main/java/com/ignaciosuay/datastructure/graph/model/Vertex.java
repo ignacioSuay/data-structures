@@ -12,8 +12,8 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vertex<V> {
+public class Vertex<V, E> {
     private V element;
-    private Map<Vertex<V>, Edge> endpoint = new HashMap<>();
+    private Map<Vertex<V, E>, Edge<E>> endpoint = new HashMap<>();
 
 }
