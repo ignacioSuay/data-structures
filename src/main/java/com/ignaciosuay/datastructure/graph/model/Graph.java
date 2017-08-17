@@ -40,12 +40,15 @@ public class Graph<V, E> {
     }
 
     public void insertEdge(Vertex u, Vertex v, E element) {
+        insertEdge(u, v, element, 0);
+    }
+    public void insertEdge(Vertex u, Vertex v, E element, double weight) {
         Edge<E> edge = new Edge<>();
         edge.setElement(element);
+        edge.setWeight(weight);
         edge.setStart(u);
         edge.setEnd(v);
         v.getEndpoint().put(u, edge);
         u.getEndpoint().put(v, edge);
     }
-
 }
