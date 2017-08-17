@@ -28,4 +28,21 @@ class GraphFixture {
         graph
     }
 
+//          b
+//     /10       20\
+//    a----100------c
+    def static Graph weightedGraph() {
+        Graph<String, String> graph = new Graph<>()
+        def vertexA = aVertex("a")
+        def vertexB = aVertex("b")
+        def vertexC = aVertex("c")
+        graph.addListVertex([vertexA, vertexB, vertexC])
+
+        graph.insertEdge(vertexA, vertexB, "a-b", 10)
+        graph.insertEdge(vertexB, vertexC, "b-c", 20)
+        graph.insertEdge(vertexA, vertexC, "a-c", 100)
+
+        graph
+    }
+
 }
