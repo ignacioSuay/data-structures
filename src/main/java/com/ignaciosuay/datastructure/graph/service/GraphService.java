@@ -17,9 +17,9 @@ public class GraphService {
     }
 
 
-    private void dfs(Graph graph, Vertex<String> u, Set<Vertex> known, Map<Vertex, Edge> forest) {
+    private <V, E> void dfs(Graph graph, Vertex<V, E> u, Set<Vertex> known, Map<Vertex, Edge> forest) {
         known.add(u);
-        for (Vertex<String> v : u.getEndpoint().keySet()) {
+        for (Vertex<V, E> v : u.getEndpoint().keySet()) {
             if (!known.contains(v)) {
                 Edge edge = u.getEndpoint().get(v);
                 forest.put(v, edge);
@@ -28,17 +28,17 @@ public class GraphService {
         }
     }
 
-    public Map<Vertex, Edge> bfs(Graph<String, String> graph, Vertex<String> start) {
-        List<Vertex<String>> level = new ArrayList<>();
+    public <V, E> Map<Vertex<V, E>, Edge<E>> bfs(Graph<V, E> graph, Vertex<V, E> start) {
+        List<Vertex<V, E>> level = new ArrayList<>();
         Set<Vertex> known = new HashSet<>();
-        Map<Vertex, Edge> forest = new LinkedHashMap<>();
+        Map<Vertex<V, E>, Edge<E>> forest = new LinkedHashMap<>();
         level.add(start);
         known.add(start);
 
         while (!level.isEmpty()) {
-            List<Vertex<String>> newLevel = new ArrayList<>();
-            for (Vertex<String> vertex : level) {
-                for (Vertex<String> outVertex : vertex.getEndpoint().keySet()) {
+            List<Vertex<V, E>> newLevel = new ArrayList<>();
+            for (Vertex<V, E> vertex : level) {
+                for (Vertex<V, E> outVertex : vertex.getEndpoint().keySet()) {
                     if (!known.contains(outVertex)) {
                         known.add(outVertex);
                         newLevel.add(outVertex);
@@ -49,6 +49,41 @@ public class GraphService {
             }
         }
         return forest;
+    }
+
+    public <V, E> void dijkstra(Graph<V, E> graph, Vertex<V, E> start) {
+        Map<Vertex, Integer> distance = new HashMap<>();
+        Set<Vertex> known = new HashSet<>();
+
+        for (Vertex<V, E> gVertex : graph.getVertices()) {
+            if (gVertex.equals(start))
+                distance.put(gVertex, 0);
+            else
+                distance.put(gVertex, Integer.MAX_VALUE);
+        }
+
+        Map<Vertex<V, E>, Integer> unsettledNodes = new HashMap<>();
+        known.add(start);
+        unsettledNodes.put(start, 0);
+
+        while (!unsettledNodes.isEmpty()) {
+            Map.Entry<Vertex<V, E>, Integer> node = getMinDistance(unsettledNodes);
+            unsettledNodes.remove(node.getKey());
+            for (Map.Entry<Vertex<V, E>, Edge<E>> vertexEdgeEntry : node.getKey().getEndpoint().entrySet()) {
+                if(!known.contains(vertexEdgeEntry.getKey())){
+                    double dist = vertexEdgeEntry.getValue().getWeight() + distance.get(node.getKey());
+                    if(dist < distance.get(vertexEdgeEntry.getKey())){
+                        distance.put(vertexEdgeEntry.getKey(), (int) dist);
+                        unsettledNodes.put(vertexEdgeEntry.getKey(), (int) dist);
+                    }
+                }
+            }
+        }
+
+    }
+
+    private <V, E> Map.Entry<Vertex<V, E>, Integer> getMinDistance(Map<Vertex<V, E>, Integer> unsettledNodes) {
+        return unsettledNodes.entrySet().stream().min(Comparator.comparingInt(Map.Entry::getValue)).get();
     }
 
 }
