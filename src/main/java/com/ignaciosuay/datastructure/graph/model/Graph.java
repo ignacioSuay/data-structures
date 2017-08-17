@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Graph<V, E> {
 
-    private List<Vertex<V>> vertices = new ArrayList<>();
+    private List<Vertex<V, E>> vertices = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
     public Edge getEdge(Vertex start, Vertex end) {
@@ -31,11 +31,11 @@ public class Graph<V, E> {
         throw new IllegalArgumentException("v is not incident to this age");
     }
 
-    public void addVertex(Vertex<V> vertex) {
+    public void addVertex(Vertex<V, E> vertex) {
         vertices.add(vertex);
     }
 
-    public void addListVertex(List<Vertex<V>> vertexList) {
+    public void addListVertex(List<Vertex<V, E>> vertexList) {
         vertices.addAll(vertexList);
     }
 
