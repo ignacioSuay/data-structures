@@ -51,35 +51,43 @@ public class GraphService {
         return forest;
     }
 
-    public <V, E> void dijkstra(Graph<V, E> graph, Vertex<V, E> start) {
+    public <V, E> Map<Vertex, Integer> dijkstra(Graph<V, E> graph, Vertex<V, E> start) {
         Map<Vertex, Integer> distance = new HashMap<>();
         Set<Vertex> known = new HashSet<>();
-
-        for (Vertex<V, E> gVertex : graph.getVertices()) {
-            if (gVertex.equals(start))
-                distance.put(gVertex, 0);
-            else
-                distance.put(gVertex, Integer.MAX_VALUE);
-        }
-
         Map<Vertex<V, E>, Integer> unsettledNodes = new HashMap<>();
-        known.add(start);
+
+        initializeDistance(graph, start, distance);
         unsettledNodes.put(start, 0);
 
         while (!unsettledNodes.isEmpty()) {
             Map.Entry<Vertex<V, E>, Integer> node = getMinDistance(unsettledNodes);
             unsettledNodes.remove(node.getKey());
             for (Map.Entry<Vertex<V, E>, Edge<E>> vertexEdgeEntry : node.getKey().getEndpoint().entrySet()) {
-                if(!known.contains(vertexEdgeEntry.getKey())){
+
+                if (!known.contains(vertexEdgeEntry.getKey())) {
+
                     double dist = vertexEdgeEntry.getValue().getWeight() + distance.get(node.getKey());
-                    if(dist < distance.get(vertexEdgeEntry.getKey())){
+
+                    if (dist < distance.get(vertexEdgeEntry.getKey())) {
                         distance.put(vertexEdgeEntry.getKey(), (int) dist);
                         unsettledNodes.put(vertexEdgeEntry.getKey(), (int) dist);
                     }
                 }
-            }
-        }
 
+            }
+            known.add(node.getKey());
+        }
+        return distance;
+
+    }
+
+    private <V, E> void initializeDistance(Graph<V, E> graph, Vertex<V, E> start, Map<Vertex, Integer> distance) {
+        for (Vertex<V, E> gVertex : graph.getVertices()) {
+            if (gVertex.equals(start))
+                distance.put(gVertex, 0);
+            else
+                distance.put(gVertex, Integer.MAX_VALUE);
+        }
     }
 
     private <V, E> Map.Entry<Vertex<V, E>, Integer> getMinDistance(Map<Vertex<V, E>, Integer> unsettledNodes) {
