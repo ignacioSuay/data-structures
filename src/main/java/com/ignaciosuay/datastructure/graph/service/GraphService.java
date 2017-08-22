@@ -8,7 +8,6 @@ import java.util.*;
 
 public class GraphService {
 
-
     public Map<Vertex, Edge> calculateForestDfs(Graph graph, Vertex u) {
         Map<Vertex, Edge> forest = new LinkedHashMap<>();
         Set<Vertex> known = new HashSet<>();
